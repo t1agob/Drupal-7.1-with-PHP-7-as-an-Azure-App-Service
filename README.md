@@ -1,3 +1,5 @@
+![image](https://tiagob.visualstudio.com/Drupal7Container/_apis/build/status/Drupal7Container-CI)
+
 # Running a Custom Docker Container in an Azure App Service
 >This tutorial deploys Drupal 7.61 with PHP 7. However, the steps and principals can be applied to other customer containers too.
 ## Prerequisites (required)
