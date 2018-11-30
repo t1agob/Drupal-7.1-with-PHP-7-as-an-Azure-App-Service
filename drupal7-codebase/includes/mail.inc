@@ -13,7 +13,7 @@
 define('MAIL_LINE_ENDINGS', isset($_SERVER['WINDIR']) || (isset($_SERVER['SERVER_SOFTWARE']) && strpos($_SERVER['SERVER_SOFTWARE'], 'Win32') !== FALSE) ? "\r\n" : "\n");
 
 /**
- * Composes and optionally sends an e-mail messages.
+ * Composes and optionally sends an e-mail message.
  *
  * Sending an e-mail works with defining an e-mail template (subject, text
  * and possibly e-mail headers) and the replacement values to use in the

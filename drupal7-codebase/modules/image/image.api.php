@@ -30,7 +30,7 @@
  *     when adding or configuring this image effect.
  *   - "form callback": (optional) The name of a function that will return a
  *     $form array providing a configuration form for this image effect.
- *   - "summary theme": (optional) The name of a theme function that will output....
+ *   - "summary theme": (optional) The name of a theme function that will output
  *     a summary of this image effect's configuration.
  *
  * @see hook_image_effect_info_alter()
