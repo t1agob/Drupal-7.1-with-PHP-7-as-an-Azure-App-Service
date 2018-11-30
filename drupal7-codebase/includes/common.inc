@@ -611,9 +611,8 @@ function drupal_parse_url($url) {
   }
   // The 'q' parameter contains the path of the current page if clean URLs are
   // disabled. It overrides the 'path' of the URL when present, even if clean
-  // URLs are enabled, due to how Apache rewriting rules work. The path
-  // parameter must be a string.
-  if (isset($options['query']['q']) && is_string($options['query']['q'])) {
+  // URLs are enabled, due to how Apache rewriting rules work.
+  if (isset($options['query']['q'])) {
     $options['path'] = $options['query']['q'];
     unset($options['query']['q']);
   }
@@ -867,10 +866,8 @@ function drupal_http_request($url, array $options = array()) {
       // Make the socket connection to a proxy server.
       $socket = 'tcp://' . $proxy_server . ':' . variable_get('proxy_port', 8080);
       // The Host header still needs to match the real request.
-      if (!isset($options['headers']['Host'])) {
-        $options['headers']['Host'] = $uri['host'];
-        $options['headers']['Host'] .= isset($uri['port']) && $uri['port'] != 80 ? ':' . $uri['port'] : '';
-      }
+      $options['headers']['Host'] = $uri['host'];
+      $options['headers']['Host'] .= isset($uri['port']) && $uri['port'] != 80 ? ':' . $uri['port'] : '';
       break;
 
     case 'http':
@@ -880,18 +877,14 @@ function drupal_http_request($url, array $options = array()) {
       // RFC 2616: "non-standard ports MUST, default ports MAY be included".
       // We don't add the standard port to prevent from breaking rewrite rules
       // checking the host that do not take into account the port number.
-      if (!isset($options['headers']['Host'])) {
-        $options['headers']['Host'] = $uri['host'] . ($port != 80 ? ':' . $port : '');
-      }
+      $options['headers']['Host'] = $uri['host'] . ($port != 80 ? ':' . $port : '');
       break;
 
     case 'https':
       // Note: Only works when PHP is compiled with OpenSSL support.
       $port = isset($uri['port']) ? $uri['port'] : 443;
       $socket = 'ssl://' . $uri['host'] . ':' . $port;
-      if (!isset($options['headers']['Host'])) {
-        $options['headers']['Host'] = $uri['host'] . ($port != 443 ? ':' . $port : '');
-      }
+      $options['headers']['Host'] = $uri['host'] . ($port != 443 ? ':' . $port : '');
       break;
 
     default:
@@ -2317,10 +2310,7 @@ function url($path = NULL, array $options = array()) {
     $language = isset($options['language']) && isset($options['language']->language) ? $options['language']->language : '';
     $alias = drupal_get_path_alias($original_path, $language);
     if ($alias != $original_path) {
-      // Strip leading slashes from internal path aliases to prevent them
-      // becoming external URLs without protocol. /example.com should not be
-      // turned into //example.com.
-      $path = ltrim($alias, '/');
+      $path = $alias;
     }
   }
 
