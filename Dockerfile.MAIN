@@ -1,4 +1,4 @@
-FROM creg7smg.azurecr.io/drupal-7-as-an-azure-app-service:base
+FROM t1agobacr.azurecr.io/drupal7:PHP7-base
 #This file was inspired by: https://github.com/Azure/app-service-builtin-images/tree/master/php/7.2.1-apache
 
 # RUN apt-get update

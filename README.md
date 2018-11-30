@@ -1,5 +1,5 @@
-# Running a Customer Docker Container in an Azure App Service (aka web app or website)
->This tutorial deploys Drupal 7. However, the steps and pricipals can be applied to other customer containers too.
+# Running a Custom Docker Container in an Azure App Service
+>This tutorial deploys Drupal 7.61 with PHP 7. However, the steps and principals can be applied to other customer containers too.
 ## Prerequisites (required)
 1. Install the [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest) on your local machine.
 2. Install [Docker CE](https://docs.docker.com/install/) on your local machine. 
@@ -15,8 +15,8 @@
 ### How to Build the Base Docker Image
 >WHY? The base image takes several minutes to create. Waiting several minutes everytime you deploy your web site gets tedious. Instead I like to create a base image, and then I build my main image everytime I deploy. Because the main image is based on the base image, the main image is created in less than 30 seconds.
 
-1. Run `docker build --rm -f "Dockerfile.BASE" -t creg7smg.azurecr.io/drupal-7-as-an-azure-app-service:base .` (NOTE: include the period. If you are using Docker Hub and not ACS, remove `creg7smg.azurecr.io/`)
->creg7smg.azurecr.io is the name of my Docker repository. Replace it with your repository name.
+1. Run `docker build --rm -f "Dockerfile.BASE" -t t1agobacr.azurecr.io/drupal7:PHP7-base .` (NOTE: include the period. If you are using Docker Hub and not ACR, remove `t1agobacr.azurecr.io/`)
+>t1agobacr.azurecr.io is the name of my Docker repository. Replace it with your repository name.
 
 <details><summary>Visual Studio Code - Build (click here)</summary>
 <p>
@@ -28,21 +28,21 @@
 </details>
 
 ### How to Build the Main Docker Image
-1. Edit line 1 of `Dockerfile`. The `FROM` command should reference the base image name For example:
- `FROM creg7smg.azurecr.io/drupal-7-as-an-azure-app-service:base`
-2. Run `docker build --rm -f "Dockerfile.MAIN" -t creg7smg.azurecr.io/drupal-7-as-an-azure-app-service:latest .`
+1. Edit line 1 of `Dockerfile.MAIN`. The `FROM` command should reference the base image name For example:
+ `FROM t1agobacr.azurecr.io/drupal7:PHP7-base`
+2. Run `docker build --rm -f "Dockerfile.MAIN" -t t1agobacr.azurecr.io/drupal7:PHP7-latest .`
 
 <details><summary>Visual Studio Code - Run (click here)</summary>
 <p>
 
 ![myimage]
 
-[myimage]: images/VSCode-Dockerfile_Run.png 
+[myimage]: images/VSCode-Image_Run.png 
 </p>
 </details>
 
 ### How to Run your Site Locally
-1. Run `docker run --rm -it -p 2222:2222 -p 80:80 drupal-7-as-an-azure-app-service:latest`
+1. Run `docker run --rm -it -p 2222:2222 -p 80:80 drupal7:PHP7-latest`
 2. Open a web browser and navigate to http://localhost. You should see the Drual logo and the title "Select an installation profile"
 3. To get to the bash prompt inside of your now running container, in another terminal window, run:
 `docker exec -it vigilant_elion /bin/sh`
@@ -50,8 +50,8 @@
 
 >If you successfully got to the webpage showing the Drupal logo, you can move to the next steps. Otherwise, it's time to troubleshoot.
 
-4. You'll now push (upload) both the base image and the main images to a container registery so that others, including Azure, can use it: Run `docker push creg7smg.azurecr.io/drupal-7-as-an-azure-app-service:base` . Again replace creg7smg.azurecr.io with the name of your Docker repository.
-5. Now push the main image. Run `docker push creg7smg.azurecr.io/drupal-7-as-an-azure-app-service:latest`
+4. You'll now push (upload) both the base image and the main images to a container registery so that others, including Azure, can use it: Run `docker push t1agobacr.azurecr.io/drupal7:PHP7-base` . Again replace t1agobacr.azurecr.io with the name of your Docker repository.
+5. Now push the main image. Run `docker push t1agobacr.azurecr.io/drupal7:PHP7-latest`
 
 <details><summary>Visual Studio Code - Push (click here)</summary>
 <p>
